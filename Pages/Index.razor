@@ -1,0 +1,26 @@
+﻿@page "/"
+@inject IJSRuntime jsRuntime
+
+<h1>Example of .NET 5.0 RC1 Blazor JavaScript Isolation with JSObjectReference</h1>
+
+Welcome to your new app.
+
+<button type="button" class="btn btn-primary" @onclick="OnClick">
+    Click Me
+</button>
+
+@code {
+
+    JSObjectReference module;
+
+    protected override async void OnInitialized()
+    {
+        module = await jsRuntime
+            .InvokeAsync<JSObjectReference>("import", "./exampleJsInterop.js");
+    }
+
+    public async Task OnClick()
+    {
+        await module.InvokeAsync<string>("showPrompt", "What's up?");
+    }
+}
